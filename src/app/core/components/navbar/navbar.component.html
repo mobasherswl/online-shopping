@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <button mat-flat-button class="docs-navbar-header-item-selected" color="primary" routerLink="/">OS</button>
+  <button mat-flat-button color="primary" routerLink="/shopping-cart">Shopping Cart</button>
+  <ng-template #anonymousUser>
+    <button mat-flat-button color="primary" routerLink="/login">
+      Login
+    </button>
+  </ng-template>
+  <button mat-flat-button [mat-menu-trigger-for]="dropdown" color="primary"
+          *ngIf="appUser; else anonymousUser">
+    {{appUser.name}}
+    <i class="arrow down"></i>
+  </button>
+  <mat-menu #dropdown="matMenu" xPosition="after">
+    <button mat-menu-item routerLink="/my/orders">My Orders</button>
+    <ng-container *ngIf="appUser && appUser.isAdmin">
+      <button mat-menu-item routerLink="/admin/orders">Manage Orders</button>
+      <button mat-menu-item routerLink="/admin/products">Manage Products</button>
+    </ng-container>
+    <button mat-menu-item (click)="logout()">Log Out</button>
+  </mat-menu>
+</mat-toolbar>

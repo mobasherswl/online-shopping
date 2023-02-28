@@ -1,0 +1,74 @@
+<mat-grid-list cols="2">
+  <mat-grid-tile>
+    <form (ngSubmit)="save(f.value)" #f="ngForm">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="Title" [(ngModel)]="product.title" name="title" id="title" required
+                 #title="ngModel">
+          <!--      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>-->
+          <!--      <mat-hint>Hint</mat-hint>-->
+          <mat-error *ngIf="title.touched && title.invalid">
+            <span *ngIf="title.errors?.['required']">Title is required</span>
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill" floatLabel="always" style="width: 214px">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" class="example-right-align" [min]="0" placeholder="0"
+                 [(ngModel)]="product.price" id="price"
+                 name="price" #price="ngModel" required>
+          <span matTextPrefix>$&nbsp;</span>
+          <!--      <span matTextSuffix>.00</span>-->
+          <mat-error *ngIf="price.touched && price.invalid">
+            <span *ngIf="price.errors?.['required']">Price is required</span>
+            <span *ngIf="price.errors?.['min']">Price should be 0 or higher</span>
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Category</mat-label>
+          <mat-select [(ngModel)]="product.category" id="category" name="category" name="category" #category="ngModel"
+                      required>
+            <mat-option [value]="c.id" *ngFor="let c of (categories$ | async)">{{c.model.name}}</mat-option>
+          </mat-select>
+          <!--      <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>-->
+          <mat-error *ngIf="category.touched && category.invalid">
+            <span *ngIf="category.errors?.['required']">Category is required</span>
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Image URL</mat-label>
+          <input matInput placeholder="Image URL" [(ngModel)]="product.imgUrl" id="imgUrl" name="imgUrl"
+                 #imgUrl="ngModel" required url>
+          <!--      <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>-->
+          <mat-error *ngIf="imgUrl.touched && imgUrl.invalid">
+            <span *ngIf="imgUrl.errors?.['required']">Image URL is required</span>
+            <span *ngIf="imgUrl.errors?.['url']">Image URL is invalid</span>
+          </mat-error>
+        </mat-form-field>
+      </p>
+      <button mat-raised-button color="primary">Save</button>
+      <button type="button" mat-raised-button color="warn" (click)="delete()" [disabled]="!id">Delete</button>
+    </form>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card>
+      <mat-card-content>
+        <img mat-card-xl-image [src]="product.imgUrl" *ngIf="product.imgUrl; else avatar">
+        <ng-template #avatar>
+          <img mat-card-xl-image
+               src="https://thumbs.dreamstime.com/z/groceries-icon-vector-set-commercial-use-98679652.jpg">
+        </ng-template>
+        <mat-card-footer>
+          <mat-card-title>{{product.title || 'Product Title'}}</mat-card-title>
+          <mat-card-subtitle>{{product.price || '0.00' | currency}}</mat-card-subtitle>
+        </mat-card-footer>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

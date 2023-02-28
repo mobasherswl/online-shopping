@@ -1,0 +1,37 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" opened>
+    <mat-selection-list role="list" multiple="false" hideSingleSelectionIndicator="true">
+      <mat-list-option (click)="selectCategory(null);this.category=''">
+        All Categories
+      </mat-list-option>
+      <mat-divider></mat-divider>
+      <mat-list-option *ngFor="let c of categories$|async" role="listitem" [selected]="selected(c)" (click)="selectCategory(c)">
+        {{c.model.name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div style="width: 60%;margin: auto">
+      <mat-grid-list cols="2" rowHeight="1:1">
+        <mat-grid-tile *ngFor="let product of filteredProducts">
+          <mat-card>
+            <mat-card-content>
+              <img mat-card-xl-image [src]="product.model.imgUrl" *ngIf="product.model.imgUrl; else avatar">
+              <ng-template #avatar>
+                <img mat-card-xl-image
+                     src="https://thumbs.dreamstime.com/z/groceries-icon-vector-set-commercial-use-98679652.jpg">
+              </ng-template>
+              <mat-card-footer>
+                <mat-card-title>{{product.model.title || 'Product Title'}}</mat-card-title>
+                <mat-card-subtitle>{{product.model.price || '0.00' | currency}}</mat-card-subtitle>
+              </mat-card-footer>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button color="primary">Add to Cart</button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
